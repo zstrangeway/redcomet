@@ -1,0 +1,58 @@
+Description: Root stack for Red Comet Infrastructure
+
+###############################################################################
+Parameters:
+###############################################################################
+
+  Environment:
+    Description: Enter deployment environment (DEV, PROD)
+    Type: String
+    AllowedValues: 
+      - DEV
+      - PROD
+  TemplatePath:
+    Description: Enter path to template S3 bucket
+    Type: String
+
+###############################################################################
+Mappings:
+###############################################################################
+
+  EnvironmentMap: 
+    PROD: 
+      HostedZone: redcometcrafts.com
+      DomainName: redcometcrafts.com
+      WebAppRootBucketName: red-comet-webapp-prod
+      WebAppLogBucketName: red-comet-webapp-logs-prod
+    DEV: 
+      HostedZone: redcometcrafts.com
+      DomainName: dev.redcometcrafts.com
+      WebAppRootBucketName: red-comet-webapp-dev
+      WebAppLogBucketName: red-comet-webapp-logs-dev
+
+###############################################################################
+Resources:
+###############################################################################
+
+# TODO: Automate certificate validation
+# TODO: Review max and min TTL
+  WebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, DomainName]
+        RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
+        LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
+      TemplateURL: !Sub '${TemplatePath}/stacks/s3-static-site.yml'
+
+###############################################################################
+Outputs:
+###############################################################################
+
+  WebAppRootBucketName:
+    Value: !GetAtt WebAppStack.Outputs.RootBucketName
+    Description: Name of the S3 bucket that hosts the static site.
+  WebAppLogBucketName:
+    Value: !GetAtt WebAppStack.Outputs.LogBucketName
+    Description: Name of the S3 bucket that stores the logs.
