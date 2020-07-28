@@ -25,6 +25,12 @@ aws s3 sync \
 --region us-east-1 \
 --profile rc_zac
 
+// Copy web admin files to S3
+aws s3 sync \
+./web-admin s3://red-comet-webadmin-dev \
+--region us-east-1 \
+--profile rc_zac
+
 // Deploy Red Comet Stack
 aws cloudformation deploy \
 --stack-name RedComet-DEV \
@@ -42,6 +48,12 @@ WARNING: PROD DEPLOY SCRIPTS!!!!!!!!
 // Copy web app files to S3
 aws s3 sync \
 ./web-app s3://red-comet-webapp-prod \
+--region us-east-1 \
+--profile rc_zac
+
+// Copy web admin files to S3
+aws s3 sync \
+./web-admin s3://red-comet-webadmin-prod \
 --region us-east-1 \
 --profile rc_zac
 
