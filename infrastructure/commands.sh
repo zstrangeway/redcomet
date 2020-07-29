@@ -20,12 +20,12 @@ case $COMMAND in
 
 2)
     echo "Syncing Dev Web App..."
-    ./infrastructure/scripts/syncS3Bucket.sh ./web-app s3://red-comet-webapp-dev
+    ./infrastructure/scripts/syncS3Bucket.sh ./web-app/dist s3://red-comet-webapp-dev
     ;;
 
 3)
     echo "Syncing Dev Web Admin..."
-    ./infrastructure/scripts/syncS3Bucket.sh ./web-admin s3://red-comet-webadmin-dev
+    ./infrastructure/scripts/syncS3Bucket.sh ./web-admin/dist s3://red-comet-webadmin-dev
     ;;
 
 4)
@@ -40,12 +40,12 @@ case $COMMAND in
 
 2p)
     echo "Syncing Prod Web App..."
-    ./infrastructure/scripts/syncS3Bucket.sh ./web-app s3://red-comet-webapp-prod
+    ./infrastructure/scripts/syncS3Bucket.sh ./web-app/dist s3://red-comet-webapp-prod
     ;;
 
 3p)
     echo "Syncing Prod Web Admin..."
-    ./infrastructure/scripts/syncS3Bucket.sh ./web-admin s3://red-comet-webadmin-prod
+    ./infrastructure/scripts/syncS3Bucket.sh ./web-admin/dist s3://red-comet-webadmin-prod
     ;;
 
 *)
