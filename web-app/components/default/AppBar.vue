@@ -31,13 +31,12 @@
 
 <script lang="ts">
 import Vue from "vue"
-import MenuItem from "~/assets/types/MenuItem.ts"
 
 export default Vue.extend({
   props: {
     items: {
-      type: [MenuItem],
-      default: [],
+      type: Array,
+      default: new Array(),
     },
     drawer: {
       type: Boolean,

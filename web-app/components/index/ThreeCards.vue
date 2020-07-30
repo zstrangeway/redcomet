@@ -9,7 +9,7 @@
     </v-container>
     <v-container>
       <v-row>
-        <v-col v-for="item in cardItems" :key="item" cols="12" md="4">
+        <v-col v-for="(item, i) in cardItems" :key="i" cols="12" md="4">
           <v-card
             elevation="1"
             pa-2
@@ -38,7 +38,6 @@
 
 <script lang="ts">
 import Vue from "vue"
-import CardItem from "~/assets/types/CardItem.ts"
 
 export default Vue.extend({
   props: {
@@ -47,8 +46,8 @@ export default Vue.extend({
       default: "",
     },
     cardItems: {
-      type: [CardItem],
-      default: [],
+      type: Array,
+      default: new Array(),
     },
   },
 })
