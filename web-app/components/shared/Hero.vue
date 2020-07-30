@@ -1,5 +1,9 @@
 <template>
-  <v-parallax dark :src="imageUrl">
+  <v-img
+    :src="imageUrl"
+    gradient="to top, rgba(0,0,0,.62), rgba(0,0,0,.62)"
+    :height="imageHeight"
+  >
     <v-row align="center" justify="center">
       <v-col class="text-center" cols="12">
         <h1 class="display-1 font-weight-thin mb-4">
@@ -10,7 +14,7 @@
         </h4>
       </v-col>
     </v-row>
-  </v-parallax>
+  </v-img>
 </template>
 
 <script lang="ts">
@@ -18,6 +22,10 @@ import Vue from "vue"
 
 export default Vue.extend({
   props: {
+    fullscreen: {
+      type: Boolean,
+      default: false,
+    },
     imageUrl: {
       type: String,
       default: "",
@@ -29,6 +37,11 @@ export default Vue.extend({
     subHeading: {
       type: String,
       default: "",
+    },
+  },
+  computed: {
+    imageHeight() {
+      return this.fullscreen ? "100vh" : "600px"
     },
   },
 })

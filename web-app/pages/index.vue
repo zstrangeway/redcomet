@@ -5,6 +5,7 @@
         :image-url="heroImageUrl"
         :heading="heroHeading"
         :sub-heading="heroSubHeading"
+        fullscreen
       />
     </section>
     <content-card>
