@@ -20,7 +20,7 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
-  css: [],
+  css: ["~/assets/global.scss"],
   plugins: [],
   components: true,
   buildModules: ["@nuxt/typescript-build", "@nuxtjs/vuetify"],

@@ -1,5 +1,5 @@
 <template>
-  <section class="grey lighten-3 py-12 px-4">
+  <div>
     <v-container>
       <v-layout column align-center>
         <h2 class="display-3 text-center">
@@ -33,7 +33,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">

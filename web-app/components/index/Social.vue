@@ -1,27 +1,40 @@
 <template>
-  <section class="accent py-12">
-    <v-icon dark size="56">
+  <v-sheet class="social text-center" :dark="dark">
+    <v-icon class="mb-4" size="56">
       mdi-facebook
     </v-icon>
-    <h2>Social Media</h2>
-    <v-divider class="base-divder" dark />
-    <p>
+    <h3 class="display-1 mx-auto mb-2" :dark="dark">
+      Social Media
+    </h3>
+    <divider class="mb-8" :dark="dark" />
+    <p class="text-center mb-16 mx-auto">
       Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Etiam porta
-      sem malesuada magna mollis euismod.
+      sem malesuada magna mollis euismod. Donec id elit non mi porta gravida at
+      eget metus.
     </p>
-    <v-btn :href="facebookUrl" target="_blank" x-large>
+    <v-btn :color="buttonColor" :href="facebookUrl" target="_blank" x-large>
       Follow Us
-      <v-icon right dark>
+      <v-icon right>
         mdi-open-in-new
       </v-icon>
     </v-btn>
-  </section>
+  </v-sheet>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 
 export default Vue.extend({
+  props: {
+    dark: {
+      type: Boolean,
+      default: false,
+    },
+    buttonColor: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       facebookUrl:
@@ -31,4 +44,13 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.social {
+  background: transparent;
+
+  p {
+    opacity: 56%;
+    max-width: 600px;
+  }
+}
+</style>

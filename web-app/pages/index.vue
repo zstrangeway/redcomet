@@ -1,12 +1,20 @@
 <template>
   <div>
-    <hero
-      :image-url="heroImageUrl"
-      :heading="heroHeading"
-      :sub-heading="heroSubHeading"
-    />
-    <three-cards :title="cardTitle" :card-items="cardItems" />
-    <social />
+    <section id="hero">
+      <hero
+        :image-url="heroImageUrl"
+        :heading="heroHeading"
+        :sub-heading="heroSubHeading"
+      />
+    </section>
+    <content-card>
+      <section id="links" class="grey lighten-3 py-12 px-4">
+        <three-cards :title="cardTitle" :card-items="cardItems" />
+      </section>
+      <section id="social" class="accent py-14">
+        <social button-color="primary" dark />
+      </section>
+    </content-card>
   </div>
 </template>
 

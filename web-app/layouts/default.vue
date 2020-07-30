@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="rc-app">
     <nav-drawer :items="items" :drawer="drawer" />
     <app-bar :items="items" :drawer.sync="drawer" />
     <v-main>
@@ -31,6 +31,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+#rc-app {
+  &.v-application {
+    background: #c9c9c9;
+  }
+}
+
 #main-nav-bar {
   .v-btn.v-size--small {
     font-size: 0.9rem;
