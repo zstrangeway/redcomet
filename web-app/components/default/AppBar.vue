@@ -70,5 +70,9 @@ export default Vue.extend({
   &.theme--dark {
     background: transparent;
   }
+
+  .v-btn.v-size--small {
+    font-size: 0.9rem;
+  }
 }
 </style>

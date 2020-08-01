@@ -1,5 +1,5 @@
 <template>
-  <v-card class="page-content mx-auto" elevation="24">
+  <v-card class="page-content mx-auto mb-12" elevation="24">
     <slot />
   </v-card>
 </template>

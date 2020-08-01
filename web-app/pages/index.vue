@@ -5,6 +5,8 @@
         :image-url="heroImageUrl"
         :heading="heroHeading"
         :sub-heading="heroSubHeading"
+        :text="heroText"
+        :button="heroButton"
         fullscreen
       />
     </section>
@@ -16,19 +18,23 @@
         <social button-color="primary" dark />
       </section>
     </content-card>
+    <app-footer />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import CardItem from "~/assets/types/CardItem.ts"
+import ButtonData from "~/assets/types/ButtonData.ts"
 
 export default Vue.extend({
   data() {
     return {
       heroImageUrl: "/home-banner.jpg",
-      heroHeading: "Red Comet Creations",
-      heroSubHeading: "Lorem Ipsum Dolor Sit Amet!",
+      heroHeading: "Red Comet",
+      heroSubHeading: "Creations",
+      heroText: "Lorem Ipsum Dolor Sit Amet!",
+      heroButton: new ButtonData("Get a Quote!", "/services", "primary"),
       cardTitle: "Fringilla Cursus Euismod!",
       cardItems: [
         new CardItem(

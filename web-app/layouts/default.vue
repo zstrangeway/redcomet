@@ -3,9 +3,8 @@
     <nav-drawer :items="items" :drawer="drawer" />
     <app-bar :items="items" :drawer.sync="drawer" />
     <v-main>
-      <nuxt />
+      <nuxt id="content" />
     </v-main>
-    <app-footer />
   </v-app>
 </template>
 
@@ -30,17 +29,16 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #rc-app {
   &.v-application {
-    background: #c9c9c9;
+    background: #000;
   }
 }
 
-#main-nav-bar {
-  .v-btn.v-size--small {
-    font-size: 0.9rem;
-  }
+#content {
+  min-height: 100%;
+  background: #c9c9c9;
 }
 
 .page-enter-active,
