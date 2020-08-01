@@ -1,10 +1,10 @@
 <template>
   <v-app-bar
     id="main-nav-bar"
-    app
     fixed
     elevate-on-scroll
     scroll-threshold="500"
+    :dark="!isScrolled"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.mobile"
@@ -46,9 +46,29 @@ export default Vue.extend({
   data() {
     return {
       title: "Red Comet Creations",
+      isScrolled: false,
     }
+  },
+  mounted() {
+    window.addEventListener("scroll", this.onScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll)
+  },
+  methods: {
+    onScroll() {
+      const currentScrollPosition =
+        window.pageYOffset || document.documentElement.scrollTop
+      this.isScrolled = currentScrollPosition > 0
+    },
   },
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#main-nav-bar {
+  &.theme--dark {
+    background: transparent;
+  }
+}
+</style>
