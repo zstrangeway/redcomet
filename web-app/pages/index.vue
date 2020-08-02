@@ -17,6 +17,9 @@
       <section id="social" class="accent py-14">
         <social button-color="primary" dark />
       </section>
+      <section id="contact">
+        <contact />
+      </section>
     </content-card>
     <app-footer />
   </div>
