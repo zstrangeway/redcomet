@@ -1,6 +1,9 @@
 import colors from "vuetify/es5/util/colors"
 
 export default {
+  env: {
+    googleMapsApiToken: process.env.GOOGLE_MAPS_API_TOKEN,
+  },
   server: {
     port: 4000,
   },

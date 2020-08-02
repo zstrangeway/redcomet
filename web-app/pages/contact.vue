@@ -8,7 +8,10 @@
         <contact />
       </section>
       <section id="map">
-        <google-map />
+        <google-map :map-query="mapQuery" />
+      </section>
+      <section id="social" class="accent py-14">
+        <social button-color="primary" dark />
       </section>
     </content-card>
     <app-footer />
@@ -23,6 +26,7 @@ export default Vue.extend({
     return {
       heroImageUrl: "/home-banner.jpg",
       heroHeading: "Contact Us",
+      mapQuery: "Lodi+WI",
     }
   },
 })
