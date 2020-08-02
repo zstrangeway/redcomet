@@ -37,6 +37,8 @@ export default Vue.extend({
 }
 
 #content {
+  display: flex;
+  flex-direction: column;
   min-height: 100%;
   background: #c9c9c9;
 }

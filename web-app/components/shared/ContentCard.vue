@@ -11,7 +11,8 @@ export default Vue.extend({})
 
 <style scoped>
 .page-content {
+  flex-grow: 1;
   margin-top: -64px;
-  max-width: 95%;
+  width: 95%;
 }
 </style>
