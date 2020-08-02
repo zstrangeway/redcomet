@@ -1,7 +1,5 @@
 <template>
   <v-app id="rc-app">
-    <nav-drawer :items="items" :drawer="drawer" />
-    <app-bar :items="items" :drawer.sync="drawer" />
     <v-main>
       <nuxt id="content" />
     </v-main>
@@ -10,23 +8,8 @@
 
 <script lang="ts">
 import Vue from "vue"
-import MenuItem from "~/assets/types/MenuItem.ts"
 
-export default Vue.extend({
-  data() {
-    return {
-      drawer: false,
-      items: [
-        new MenuItem("Home", "/"),
-        new MenuItem("About", "/about"),
-        new MenuItem("Services", "/services"),
-        new MenuItem("Information", "/information"),
-        new MenuItem("Contact", "/contact"),
-        new MenuItem("Gallery", "/gallery"),
-      ],
-    }
-  },
-})
+export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>

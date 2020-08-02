@@ -21,7 +21,6 @@
             {{ button.icon }}
           </v-icon>
         </v-btn>
-        <scroll-down v-if="fullscreen" class="scroll-down" />
       </div>
     </v-img>
   </v-sheet>
