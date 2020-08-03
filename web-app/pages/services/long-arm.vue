@@ -25,7 +25,7 @@ export default Vue.extend({
   data() {
     return {
       heroImageUrl: "/home-banner.jpg",
-      heroHeading: "Services",
+      heroHeading: "Long Arm Services",
     }
   },
 })

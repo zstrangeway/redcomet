@@ -37,7 +37,11 @@ export default Vue.extend({
       heroHeading: "Red Comet",
       heroSubHeading: "Creations",
       heroText: "Lorem Ipsum Dolor Sit Amet!",
-      heroButton: new ButtonData("Get a Quote!", "/services", "primary"),
+      heroButton: new ButtonData(
+        "Get a Quote!",
+        "/services/long-arm",
+        "primary"
+      ),
       cardTitle: "Fringilla Cursus Euismod!",
       cardItems: [
         new CardItem(

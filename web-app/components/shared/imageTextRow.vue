@@ -10,9 +10,14 @@
         <v-divider vertical />
       </v-col>
       <v-col cols="7">
-        <h4>{{ heading }}</h4>
+        <h4 class="display-1">
+          {{ heading }}
+        </h4>
         <divider class="mt-2 mb-3" :alignment="dividerAlignment" />
         <p>{{ text }}</p>
+        <v-btn v-if="to !== null || buttonText !== null" :to="to">
+          {{ buttonText }}
+        </v-btn>
       </v-col>
     </v-row>
   </v-sheet>
@@ -42,6 +47,14 @@ export default Vue.extend({
     inverse: {
       type: Boolean,
       default: false,
+    },
+    buttonText: {
+      type: String,
+      default: null,
+    },
+    to: {
+      type: String,
+      default: null,
     },
   },
   computed: {
