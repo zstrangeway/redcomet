@@ -1,15 +1,15 @@
 <template>
   <v-sheet :dark="dark" class="image-text-row">
-    <v-row :class="{ inversed: inverse }">
-      <v-col cols="3">
+    <v-row :class="{ inversed: inverse && !$vuetify.breakpoint.mobile }">
+      <v-col md="3" cols="12">
         <v-sheet elevation="6" class="image-text-row-sheet">
           <v-img :aspect-ratio="4 / 5" :src="imageUrl" />
         </v-sheet>
       </v-col>
-      <v-col class="text-center" cols="2">
+      <v-col class="hidden-sm-and-down text-center" cols="2">
         <v-divider vertical />
       </v-col>
-      <v-col cols="7">
+      <v-col md="7" cols="12">
         <h4 class="display-1">
           {{ heading }}
         </h4>
@@ -23,7 +23,7 @@
   </v-sheet>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue"
 
 export default Vue.extend({
@@ -59,6 +59,9 @@ export default Vue.extend({
   },
   computed: {
     dividerAlignment() {
+      if (this.$vuetify.breakpoint.mobile) {
+        return "left"
+      }
       return this.inverse ? "right" : "left"
     },
   },
