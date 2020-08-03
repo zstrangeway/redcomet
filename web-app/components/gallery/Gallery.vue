@@ -6,6 +6,10 @@
         :key="i"
         class="d-flex child-flex"
         cols="3"
+        @click.stop="
+          dialogVisible = true
+          selectedImage = i
+        "
       >
         <gallery-image
           :src="item.src"
@@ -14,6 +18,12 @@
         />
       </v-col>
     </v-row>
+    <v-dialog v-model="dialogVisible" width="80vw">
+      <gallery-dialog
+        :gallery-items="galleryItems"
+        :selected-index="selectedImage"
+      />
+    </v-dialog>
   </v-container>
 </template>
 
@@ -23,9 +33,11 @@ import Vue from "vue"
 export default Vue.extend({
   data() {
     return {
+      dialogVisible: false,
+      selectedImage: 0,
       galleryItems: [
         {
-          src: "https://picsum.photos/500/300?image=1",
+          src: "https://picsum.photos/400/500?image=1",
           lazySrc: "https://picsum.photos/10/6?image=1",
           alt: "Gallery image 1",
         },
