@@ -1,6 +1,6 @@
 <template>
   <div class="divider">
-    <v-divider class="mx-auto" :dark="dark" />
+    <v-divider :class="alignmentClass" :dark="dark" />
   </div>
 </template>
 
@@ -12,6 +12,22 @@ export default Vue.extend({
     dark: {
       type: Boolean,
       default: false,
+    },
+    alignment: {
+      type: String,
+      default: "center",
+    },
+  },
+  computed: {
+    alignmentClass() {
+      switch (this.alignment) {
+        case "left":
+          return "mr-auto"
+        case "right":
+          return "ml-auto"
+        default:
+          return "mx-auto"
+      }
     },
   },
 })
