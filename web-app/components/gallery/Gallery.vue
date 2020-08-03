@@ -5,7 +5,9 @@
         v-for="(item, i) in galleryItems"
         :key="i"
         class="d-flex child-flex"
-        cols="3"
+        cols="6"
+        sm="4"
+        md="3"
         @click.stop="
           dialogVisible = true
           selectedImage = i
