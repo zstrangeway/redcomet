@@ -57,10 +57,10 @@ export default Vue.extend({
           "mdi-room-service"
         ),
         new CardItem(
-          "Information",
+          "Gallery",
           "Nulla vitae elit libero, a pharetra augue. Donec ullamcorper nulla non metus auctor fringilla.",
-          "/information",
-          "mdi-information-variant"
+          "/gallery",
+          "mdi-image-multiple"
         ),
       ],
     }
