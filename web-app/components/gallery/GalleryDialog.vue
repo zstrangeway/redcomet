@@ -1,8 +1,8 @@
 <template>
-  <v-card dark>
+  <v-card class="gallery-dialog" dark>
     <v-carousel
       v-model="selectedIndex"
-      height="100%"
+      height="80vh"
       hide-delimiters
       show-arrows-on-hover
     >
@@ -30,4 +30,18 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.gallery-dialog {
+  .v-carousel__item {
+    .v-responsive__content {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+
+      .v-image {
+        max-height: 80vh;
+      }
+    }
+  }
+}
+</style>

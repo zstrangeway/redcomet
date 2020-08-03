@@ -18,7 +18,11 @@
         />
       </v-col>
     </v-row>
-    <v-dialog v-model="dialogVisible" width="80vw">
+    <v-dialog
+      v-model="dialogVisible"
+      width="80vw"
+      transition="scale-transition"
+    >
       <gallery-dialog
         :gallery-items="galleryItems"
         :selected-index="selectedImage"
