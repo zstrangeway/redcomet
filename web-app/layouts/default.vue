@@ -20,7 +20,6 @@ export default Vue.extend({
         new MenuItem("Home", "/"),
         new MenuItem("About", "/about"),
         new MenuItem("Services", "/services"),
-        new MenuItem("Information", "/information"),
         new MenuItem("Contact", "/contact"),
         new MenuItem("Gallery", "/gallery"),
       ],
