@@ -4,7 +4,7 @@
       <v-row>
         <v-col>
           <h3>Keep in touch with us</h3>
-          <divider alignment="left" />
+          <divider class="mt-2 mb-3" alignment="left" />
           <p>
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illo
             pariatur quidem, quis modi iure nihil commodi suscipit, corporis

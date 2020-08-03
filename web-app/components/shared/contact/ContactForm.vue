@@ -7,11 +7,8 @@
       label="Name"
       required
     />
-
     <v-text-field v-model="email" :rules="emailRules" label="E-mail" required />
-
     <v-text-field v-model="subject" label="Subject" required />
-
     <v-textarea
       v-model="message"
       :rules="messageRules"
@@ -19,7 +16,6 @@
       label="Message"
       required
     />
-
     <v-btn color="primary">
       Send Message
     </v-btn>
