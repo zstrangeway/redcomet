@@ -10,7 +10,9 @@
       v-if="$vuetify.breakpoint.mobile"
       @click.stop="$emit('update:drawer', !drawer)"
     />
-    <v-toolbar-title v-text="title" />
+    <v-toolbar-title class="app-bar-title">
+      <span>Red Comet</span> Creations
+    </v-toolbar-title>
     <v-spacer />
     <div v-if="!$vuetify.breakpoint.mobile">
       <v-btn
@@ -45,7 +47,6 @@ export default Vue.extend({
   },
   data() {
     return {
-      title: "Red Comet Creations",
       isScrolled: false,
     }
   },
@@ -73,6 +74,14 @@ export default Vue.extend({
 
   .v-btn.v-size--small {
     font-size: 0.9rem;
+  }
+
+  .app-bar-title {
+    text-transform: uppercase;
+    font-weight: 300;
+    span {
+      font-weight: 700;
+    }
   }
 }
 </style>
