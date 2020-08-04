@@ -30,6 +30,7 @@
         <quilting-quote-stepper-content
           v-model="stepper"
           :step-count="stepCount"
+          :disabled="!step1Complete"
         >
           <quilting-quote-dimens v-model="quiltingQuote" />
         </quilting-quote-stepper-content>
@@ -39,6 +40,7 @@
         <quilting-quote-stepper-content
           v-model="stepper"
           :step-count="stepCount"
+          :disabled="!step2Complete"
         >
           <h3>Select Quilting Pattern</h3>
         </quilting-quote-stepper-content>
@@ -48,6 +50,7 @@
         <quilting-quote-stepper-content
           v-model="stepper"
           :step-count="stepCount"
+          :disabled="!step3Complete"
         >
           <h3>Select Thread Color</h3>
         </quilting-quote-stepper-content>
@@ -57,6 +60,7 @@
         <quilting-quote-stepper-content
           v-model="stepper"
           :step-count="stepCount"
+          :disabled="!step4Complete"
         >
           <h3>Select Other Options</h3>
         </quilting-quote-stepper-content>
@@ -66,6 +70,7 @@
         <quilting-quote-stepper-content
           v-model="stepper"
           :step-count="stepCount"
+          :disabled="!step5Complete"
         >
           <h3>Enter Contact Information</h3>
         </quilting-quote-stepper-content>
@@ -75,6 +80,7 @@
         <quilting-quote-stepper-content
           v-model="stepper"
           :step-count="stepCount"
+          :disabled="!step6Complete"
           @submit="submit"
         >
           <h3>Summary</h3>

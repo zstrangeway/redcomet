@@ -9,10 +9,20 @@
               Previous
             </v-btn>
             <v-spacer />
-            <v-btn v-if="value < stepCount" color="primary" @click.stop="next">
+            <v-btn
+              v-if="value < stepCount"
+              color="primary"
+              :disabled="disabled"
+              @click.stop="next"
+            >
               Next
             </v-btn>
-            <v-btn v-else color="primary" @click.stop="submit">
+            <v-btn
+              v-else
+              color="primary"
+              :disabled="disabled"
+              @click.stop="submit"
+            >
               Submit
             </v-btn>
           </v-toolbar>
@@ -34,6 +44,10 @@ export default Vue.extend({
     stepCount: {
       type: Number,
       default: null,
+    },
+    disabled: {
+      type: Boolean,
+      default: true,
     },
   },
   methods: {
