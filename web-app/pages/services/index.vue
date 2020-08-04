@@ -38,7 +38,7 @@ export default Vue.extend({
           text:
             "Vestibulum id ligula porta felis euismod semper. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
           imageUrl: "https://cdn.vuetifyjs.com/images/parallax/material.jpg",
-          to: "/services/long-arm",
+          to: "/services/quilting",
           buttonText: "Get Quote",
         },
         {

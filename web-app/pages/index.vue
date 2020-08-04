@@ -39,7 +39,7 @@ export default Vue.extend({
       heroText: "Lorem Ipsum Dolor Sit Amet!",
       heroButton: new ButtonData(
         "Get a Quote!",
-        "/services/long-arm",
+        "/services/quilting",
         "primary"
       ),
       cardTitle: "Fringilla Cursus Euismod!",
