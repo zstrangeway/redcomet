@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM Tutorial
+
+###############################################################################
+Parameters:
+###############################################################################
+
+  Environment:
+    Type: String
+
+###############################################################################
+Resources:
+###############################################################################
+
+  RedCometAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Sub ${Environment}
+
+  HelloLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub HelloLambda-${Environment}
+      Handler: index.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/contact 
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess  
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /test
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          MyTableName: !Ref HelloTable
+
+  HelloTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: name
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+###############################################################################
+Outputs:
+###############################################################################
+
+  ApiURL:
+    Value: !Sub https://${RedCometAPI}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/test
+    Description: API Gateway endpoint

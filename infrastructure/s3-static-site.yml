@@ -1,3 +1,5 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
 Description: Stack for Static Sites hosted in S3
 
 ###############################################################################
@@ -75,6 +77,7 @@ Resources:
   RootBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       BucketName: !Ref RootBucketName
       BucketEncryption:
