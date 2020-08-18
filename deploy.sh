@@ -29,3 +29,4 @@ sam deploy \
     --stack-name $PROJECT \
     --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
     --parameter-overrides Environment=$STAGE
+    
