@@ -14,28 +14,28 @@ Parameters:
       - dev
 
 ###############################################################################
-# Mappings:
+Mappings:
 ###############################################################################
 
-  # EnvironmentMap: 
-  #   prod: 
-  #     HostedZone: redcometcrafts.com
-  #     ApiDomainName: api.redcometcrafts.com
-  #     WebAppDomainName: redcometcrafts.com
-  #     WebAppRootBucketName: red-comet-webapp-prod
-  #     WebAppLogBucketName: red-comet-webapp-logs-prod
-  #     WebAdminDomainName: admin.redcometcrafts.com
-  #     WebAdminRootBucketName: red-comet-webadmin-prod
-  #     WebAdminLogBucketName: red-comet-webadmin-logs-prod
-  #   dev: 
-  #     HostedZone: redcometcrafts.com
-  #     ApiDomainName: dev-api.redcometcrafts.com
-  #     WebAppDomainName: dev.redcometcrafts.com
-  #     WebAppRootBucketName: red-comet-webapp-dev
-  #     WebAppLogBucketName: red-comet-webapp-logs-dev
-  #     WebAdminDomainName: dev-admin.redcometcrafts.com
-  #     WebAdminRootBucketName: red-comet-webadmin-dev
-  #     WebAdminLogBucketName: red-comet-webadmin-logs-dev
+  EnvironmentMap: 
+    prod: 
+      HostedZone: redcometcrafts.com
+      ApiDomainName: api.redcometcrafts.com
+      WebAppDomainName: redcometcrafts.com
+      WebAppRootBucketName: red-comet-webapp-prod
+      WebAppLogBucketName: red-comet-webapp-logs-prod
+      WebAdminDomainName: admin.redcometcrafts.com
+      WebAdminRootBucketName: red-comet-webadmin-prod
+      WebAdminLogBucketName: red-comet-webadmin-logs-prod
+    dev: 
+      HostedZone: redcometcrafts.com
+      ApiDomainName: dev-api.redcometcrafts.com
+      WebAppDomainName: dev.redcometcrafts.com
+      WebAppRootBucketName: red-comet-webapp-dev
+      WebAppLogBucketName: red-comet-webapp-logs-dev
+      WebAdminDomainName: dev-admin.redcometcrafts.com
+      WebAdminRootBucketName: red-comet-webadmin-dev
+      WebAdminLogBucketName: red-comet-webadmin-logs-dev
 
 ###############################################################################
 Resources:
@@ -46,41 +46,41 @@ Resources:
     Properties:
       Parameters:
         Environment: !Sub ${Environment}
-        # HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
-        # DomainName: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
+        HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
       TemplateURL: api-stack.yml
 
-# # TODO: Automate certificate validation
-# # TODO: Review max and min TTL
-#   WebAppStack:
-#     Type: AWS::CloudFormation::Stack
-#     Properties:
-#       Parameters:
-#         HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
-#         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
-#         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
-#         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
-#       TemplateURL: s3-static-site.yml
+# TODO: Automate certificate validation
+# TODO: Review max and min TTL
+  WebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
+        RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
+        LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
+      TemplateURL: s3-static-site.yml
 
-# # TODO: Automate certificate validation
-# # TODO: Review max and min TTL
-#   WebAdminStack:
-#     Type: AWS::CloudFormation::Stack
-#     Properties:
-#       Parameters:
-#         HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
-#         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
-#         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminRootBucketName]
-#         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminLogBucketName]
-#       TemplateURL: s3-static-site.yml
+# TODO: Automate certificate validation
+# TODO: Review max and min TTL
+  WebAdminStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
+        RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminRootBucketName]
+        LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminLogBucketName]
+      TemplateURL: s3-static-site.yml
 
 ###############################################################################
-# Outputs:
+Outputs:
 ###############################################################################
 
-  # WebAppRootBucketName:
-  #   Value: !GetAtt WebAppStack.Outputs.RootBucketName
-  #   Description: Name of the S3 bucket that hosts the static site.
-  # WebAppLogBucketName:
-  #   Value: !GetAtt WebAppStack.Outputs.LogBucketName
-  #   Description: Name of the S3 bucket that stores the logs.
+  WebAppRootBucketName:
+    Value: !GetAtt WebAppStack.Outputs.RootBucketName
+    Description: Name of the S3 bucket that hosts the static site.
+  WebAppLogBucketName:
+    Value: !GetAtt WebAppStack.Outputs.LogBucketName
+    Description: Name of the S3 bucket that stores the logs.

@@ -9,40 +9,40 @@ Parameters:
   Environment:
     Description: Environment Name
     Type: String
-  # HostedZone:
-  #   Description: Hosted Zone Name
-  #   Type: String
-  # DomainName:
-  #   Description: Domain Name
-  #   Type: String
+  HostedZone:
+    Description: Hosted Zone Name
+    Type: String
+  DomainName:
+    Description: Domain Name
+    Type: String
 
 ###############################################################################
 Resources:
 ###############################################################################
 
-  # Certificate:
-  #   Type: AWS::CertificateManager::Certificate
-  #   Properties:
-  #     DomainName: !Ref DomainName
-  #     ValidationMethod: DNS
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      ValidationMethod: DNS
 
   RedCometAPI:
     Type: AWS::Serverless::Api
     Properties:
-      # Domain:
-      #   DomainName: !Ref DomainName
-      #   CertificateArn: !Ref Certificate
-      #   EndpointConfiguration: EDGE
-      #   Route53:
-      #     HostedZoneName: !Sub '${HostedZone}.'
-      #     EvaluateTargetHealth: true
+      Domain:
+        DomainName: !Ref DomainName
+        CertificateArn: !Ref Certificate
+        EndpointConfiguration: EDGE
+        Route53:
+          HostedZoneName: !Sub '${HostedZone}.'
+          EvaluateTargetHealth: true
       StageName: !Sub ${Environment}
 
-  SubmitContactLambda:
+  PostContactLambda:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub SubmitContact-${Environment}
-      Handler: index.handler
+      FunctionName: !Sub PostContact-${Environment}
+      Handler: postContact.handler
       Runtime: nodejs12.x
       CodeUri: ../back-end/contact 
       MemorySize: 128 
@@ -62,10 +62,35 @@ Resources:
         Variables:
           CONTACT_TABLE: !Ref ContactSubmissionsTable
 
+  # TODO: Require authorization
+  GetContactsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub GetContacts-${Environment}
+      Handler: getContacts.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/contact 
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /contact
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          CONTACT_TABLE: !Ref ContactSubmissionsTable
+
   ContactSubmissionsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: !Sub ContactSubmissions-${Environment}-2
+      TableName: !Sub Contacts-${Environment}
       PrimaryKey:
         Name: date
         Type: Number
