@@ -78,9 +78,26 @@ Resources:
 Outputs:
 ###############################################################################
 
+  ApiUrl:
+    Value: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
+    Description: Url for the api.
+
+  WebAppUrl:
+    Value: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
+    Description: Url for the web app.
   WebAppRootBucketName:
     Value: !GetAtt WebAppStack.Outputs.RootBucketName
-    Description: Name of the S3 bucket that hosts the static site.
+    Description: Name of the S3 bucket that hosts the static site for the web app.
   WebAppLogBucketName:
     Value: !GetAtt WebAppStack.Outputs.LogBucketName
-    Description: Name of the S3 bucket that stores the logs.
+    Description: Name of the S3 bucket that stores the logs for the web app.
+
+  WebAdminUrl:
+    Value: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
+    Description: Url for the web admin.
+  WebAdminRootBucketName:
+    Value: !GetAtt WebAdminStack.Outputs.RootBucketName
+    Description: Name of the S3 bucket that hosts the static site for the web admin.
+  WebAdminLogBucketName:
+    Value: !GetAtt WebAdminStack.Outputs.LogBucketName
+    Description: Name of the S3 bucket that stores the logs for the web admin.
