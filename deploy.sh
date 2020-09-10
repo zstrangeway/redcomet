@@ -31,4 +31,4 @@ sam deploy \
     --parameter-overrides Environment=$STAGE
 
 # deploy web-app
-(cd front-end/web-app && npm run deploy --stage=$STAGE)
+(cd front-end/web-app && npm run generate && npm run deploy --stage=$STAGE)
