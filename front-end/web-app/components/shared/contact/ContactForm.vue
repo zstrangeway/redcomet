@@ -16,7 +16,7 @@
       label="Message"
       required
     />
-    <v-btn color="primary">
+    <v-btn color="primary" @click="sendMessage">
       Send Message
     </v-btn>
   </v-form>
@@ -24,6 +24,8 @@
 
 <script lang="ts">
 import Vue from "vue"
+import ContactService from "~/assets/services/ContactService.ts"
+import ContactData from "~/assets/types/ContactData.ts"
 
 export default Vue.extend({
   data() {
@@ -49,8 +51,21 @@ export default Vue.extend({
     }
   },
   methods: {
-    sendMessage() {
-      console.log("Send Message")
+    async sendMessage() {
+      console.log("Sending Message")
+      const contactService = new ContactService()
+      const contactData = new ContactData(
+        this.email,
+        this.name,
+        this.subject,
+        this.message
+      )
+      const res = await contactService.postContact(contactData)
+      if (res.status == 200) {
+        console.log("success")
+      } else {
+        console.log("failure")
+      }
     },
   },
 })
