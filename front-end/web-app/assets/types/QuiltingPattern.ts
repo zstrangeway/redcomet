@@ -1,4 +1,4 @@
-export default class QuiltingQuote {
+export default class QuiltingPattern {
   id: string;
   name: string;
   imageUrl: string;

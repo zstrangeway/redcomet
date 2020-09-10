@@ -1,4 +1,4 @@
-export default class CardItem {
+export default class ButtonData {
   text: String
   to: String
   color: String
