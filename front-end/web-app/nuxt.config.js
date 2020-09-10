@@ -3,6 +3,7 @@ import colors from "vuetify/es5/util/colors"
 export default {
   env: {
     googleMapsApiToken: process.env.GOOGLE_MAPS_API_TOKEN,
+    contactService: process.env.CONTACT_SERVICE,
   },
   server: {
     port: 4000,
@@ -27,7 +28,7 @@ export default {
   plugins: [],
   components: true,
   buildModules: ["@nuxt/typescript-build", "@nuxtjs/vuetify"],
-  modules: [],
+  modules: ["@nuxtjs/axios"],
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
     theme: {
