@@ -44,7 +44,9 @@ function respond(code, message) {
   return {
     statusCode: code,
     headers: {
-      "x-custom-header" : "my custom header value" // TODO: Change this is to make more sense
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Content-Type': 'application/json',
     },
     body: message
   };
