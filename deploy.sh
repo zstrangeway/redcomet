@@ -17,6 +17,10 @@ mkdir $BUILD_DIR
 # make the deployment bucket in case it doesn't exist
 aws s3 mb s3://$BUCKET
 
+# compile back end
+rm -rf back-end/dist
+(cd back-end && npm run compile)
+
 # generate next stage yml file
 sam package \
     --template-file infrastructure/root.yml \

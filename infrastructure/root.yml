@@ -42,13 +42,13 @@ Resources:
 ###############################################################################
 
   ApiStack:
-    Type: AWS::CloudFormation::Stack
+    Type: AWS::Serverless::Application
     Properties:
       Parameters:
         Environment: !Sub ${Environment}
         HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
-      TemplateURL: api-stack.yml
+      Location: api-stack.yml
 
 # TODO: Automate certificate validation
 # TODO: Review max and min TTL

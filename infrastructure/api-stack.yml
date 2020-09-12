@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Transform: AWS::Serverless-2016-10-31
+Transform: 'AWS::Serverless-2016-10-31'
 Description: Stack for API
 
 ###############################################################################
@@ -44,7 +44,9 @@ Resources:
       FunctionName: !Sub PostContact-${Environment}
       Handler: postContact.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/contact 
+      CodeUri: ../back-end/dist/contact 
+      Layers:
+        - !Ref ContactLayers
       MemorySize: 128 
       Timeout: 30
       Policies:
@@ -69,7 +71,7 @@ Resources:
       FunctionName: !Sub GetContacts-${Environment}
       Handler: getContacts.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/contact 
+      CodeUri: ../back-end/dist/contact 
       MemorySize: 128 
       Timeout: 30
       Policies:
@@ -86,6 +88,15 @@ Resources:
       Environment:
         Variables:
           CONTACT_TABLE: !Ref ContactSubmissionsTable
+
+  ContactLayers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub Contact-Dependencies-${Environment}
+      Description: Dependencies for Contact functions
+      ContentUri: ../back-end/dist/_sharedLayer/nodejs
+      CompatibleRuntimes:
+        - nodejs12.x
 
   ContactSubmissionsTable:
     Type: AWS::Serverless::SimpleTable
