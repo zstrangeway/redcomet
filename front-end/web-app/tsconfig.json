@@ -23,10 +23,15 @@
         "./*"
       ]
     },
+    "typeRoots": [
+      "assets/types",
+      "node_modules/@types"
+    ],
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/axios"
+      "@nuxtjs/axios",
+      "vuetify"
     ]
   },
   "exclude": [

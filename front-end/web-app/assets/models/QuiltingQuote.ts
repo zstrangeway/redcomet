@@ -1,6 +1,6 @@
-import QuiltingPattern from '~/assets/types/QuiltingPattern'
+import QuiltingPattern from '~/assets/models/QuiltingPattern'
 
-export default class QuiltingQuote {  
+export default class QuiltingQuote {
   private _minDimen: number = 12
   private _maxDimen: number = 144
 

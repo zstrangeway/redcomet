@@ -27,8 +27,8 @@
 
 <script lang="ts">
 import Vue from "vue"
-import CardItem from "~/assets/types/CardItem.ts"
-import ButtonData from "~/assets/types/ButtonData.ts"
+import CardItem from "~/assets/models/CardItem.ts"
+import ButtonData from "~/assets/models/ButtonData.ts"
 
 export default Vue.extend({
   data() {

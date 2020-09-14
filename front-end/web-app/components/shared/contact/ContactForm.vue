@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="form">
     <v-text-field
       v-model="name"
       counter="20"
@@ -16,16 +16,26 @@
       label="Message"
       required
     />
-    <v-btn color="primary" @click="sendMessage">
+    <v-btn color="primary" :loading="submitLoading" @click="submitClicked">
       Send Message
     </v-btn>
+
+    <v-snackbar v-model="snackbar">
+      {{ snackbarMessage }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-form>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import ContactService from "~/assets/services/ContactService.ts"
-import ContactData from "~/assets/types/ContactData.ts"
+import ContactData from "~/assets/models/ContactData.ts"
 
 export default Vue.extend({
   data() {
@@ -48,11 +58,26 @@ export default Vue.extend({
         (v: string) =>
           (v && v.length <= 500) || "Message must be less than 500 characters",
       ],
+      snackbar: false,
+      snackbarMessage: "",
+      submitLoading: false,
     }
   },
+  computed: {
+    form(): VForm {
+      return this.$refs.form as VForm
+    },
+  },
   methods: {
+    async submitClicked() {
+      this.submitLoading = true
+      this.form.validate()
+      // TODO: prevent form submission if not valid
+      await this.sendMessage()
+      this.snackbar = true
+      this.submitLoading = false
+    },
     async sendMessage() {
-      console.log("Sending Message")
       const contactService = new ContactService()
       const contactData = new ContactData(
         this.email,
@@ -60,11 +85,16 @@ export default Vue.extend({
         this.subject,
         this.message
       )
+
       const res = await contactService.postContact(contactData)
+      console.log(res)
+
       if (res.status == 200) {
-        console.log("success")
+        this.form.reset()
+        this.snackbarMessage =
+          "Thanks for contacting us! We've recieved your message and will get back to you as soon as we are able."
       } else {
-        console.log("failure")
+        this.snackbarMessage = res.data.error
       }
     },
   },

@@ -23,7 +23,7 @@ export default Vue.extend({
   props: {
     items: {
       type: Array,
-      default: new Array(),
+      default: [],
     },
     drawer: Boolean,
   },

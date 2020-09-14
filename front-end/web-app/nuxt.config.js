@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import colors from "vuetify/es5/util/colors"
 
 export default {
@@ -24,13 +25,13 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
-  css: ["~/assets/global.scss"],
+  css: ["~/assets/styles/global.scss"],
   plugins: [],
   components: true,
   buildModules: ["@nuxt/typescript-build", "@nuxtjs/vuetify"],
   modules: ["@nuxtjs/axios"],
   vuetify: {
-    customVariables: ["~/assets/variables.scss"],
+    customVariables: ["~/assets/styles/variables.scss"],
     theme: {
       dark: false,
       themes: {

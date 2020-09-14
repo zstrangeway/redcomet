@@ -47,7 +47,7 @@ export default Vue.extend({
     },
     cardItems: {
       type: Array,
-      default: new Array(),
+      default: [],
     },
   },
 })

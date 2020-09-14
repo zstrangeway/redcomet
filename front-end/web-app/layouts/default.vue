@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import MenuItem from "~/assets/types/MenuItem.ts"
+import MenuItem from "~/assets/models/MenuItem.ts"
 
 export default Vue.extend({
   data() {

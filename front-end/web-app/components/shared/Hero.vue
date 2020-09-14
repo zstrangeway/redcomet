@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import ButtonData from "~/assets/types/ButtonData.ts"
+import ButtonData from "~/assets/models/ButtonData.ts"
 
 export default Vue.extend({
   props: {

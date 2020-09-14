@@ -20,7 +20,7 @@ export default Vue.extend({
   props: {
     galleryItems: {
       type: Array,
-      default: new Array(),
+      default: [],
     },
     selectedIndex: {
       type: Number,

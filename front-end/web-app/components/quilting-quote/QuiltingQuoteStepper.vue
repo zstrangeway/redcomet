@@ -92,7 +92,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import QuiltingQuote from "~/assets/types/QuiltingQuote.ts"
+import QuiltingQuote from "~/assets/models/QuiltingQuote.ts"
 
 export default Vue.extend({
   data() {
