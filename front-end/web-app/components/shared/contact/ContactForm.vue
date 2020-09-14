@@ -86,16 +86,21 @@ export default Vue.extend({
         this.message
       )
 
-      const res = await contactService.postContact(contactData)
-      console.log(res)
-
-      if (res.status == 200) {
-        this.form.reset()
+      try {
+        await contactService.postContact(contactData)
+        this.resetForm()
         this.snackbarMessage =
           "Thanks for contacting us! We've recieved your message and will get back to you as soon as we are able."
-      } else {
-        this.snackbarMessage = res.data.error
+      } catch (err) {
+        this.snackbarMessage = err.response.data.error || "Something went wrong"
       }
+    },
+    resetForm() {
+      this.email = ""
+      this.name = ""
+      this.subject = ""
+      this.message = ""
+      this.form.resetValidation()
     },
   },
 })

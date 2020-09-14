@@ -12,7 +12,7 @@ exports.handler = async (event: APIGatewayProxyEvent, context: Context): Promise
 
   let body = JSON.parse(event.body);
   let missingParams = checkParams(body, ['email', 'name', 'subject', 'message'])
-  if (missingParams.length > 0) return new ErrorResponse(400, `Error: Missing parameters: ${missingParams.join(", ")}`)
+  if (missingParams.length > 0) return new ErrorResponse(400, `Unable to process request. Missing parameters: ${missingParams.join(", ")}`)
 
   let contact = new Contact(
     context.awsRequestId,

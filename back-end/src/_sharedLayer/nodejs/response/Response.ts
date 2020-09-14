@@ -20,7 +20,7 @@ export class Response implements APIGatewayProxyResult {
 
 export class ErrorResponse extends Response {
   constructor(statusCode: number, errorMessage: string) {
-    super(statusCode, `{ "error": ${errorMessage} }`);
+    super(statusCode, `{ "error": "${errorMessage}" }`);
   }
 }
 
