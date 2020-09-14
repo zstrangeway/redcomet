@@ -1,28 +1,44 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" v-model="valid">
     <v-text-field
       v-model="name"
+      :disabled="submitLoading"
       counter="20"
       :rules="nameRules"
       label="Name"
       required
     />
-    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required />
-    <v-text-field v-model="subject" label="Subject" required />
+    <v-text-field
+      v-model="email"
+      :disabled="submitLoading"
+      :rules="emailRules"
+      label="E-mail"
+      required
+    />
+    <v-text-field
+      v-model="subject"
+      :disabled="submitLoading"
+      label="Subject"
+      required
+    />
     <v-textarea
       v-model="message"
+      :disabled="submitLoading"
       :rules="messageRules"
       counter="500"
       label="Message"
       required
     />
-    <v-btn color="primary" :loading="submitLoading" @click="submitClicked">
+    <v-btn
+      :disabled="!valid"
+      color="primary"
+      :loading="submitLoading"
+      @click="submitClicked"
+    >
       Send Message
     </v-btn>
-
     <v-snackbar v-model="snackbar">
       {{ snackbarMessage }}
-
       <template v-slot:action="{ attrs }">
         <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
           Close
@@ -61,19 +77,16 @@ export default Vue.extend({
       snackbar: false,
       snackbarMessage: "",
       submitLoading: false,
+      valid: false,
     }
-  },
-  computed: {
-    form(): VForm {
-      return this.$refs.form as VForm
-    },
   },
   methods: {
     async submitClicked() {
+      if (!this.valid) return
       this.submitLoading = true
-      this.form.validate()
-      // TODO: prevent form submission if not valid
+
       await this.sendMessage()
+
       this.snackbar = true
       this.submitLoading = false
     },
@@ -96,11 +109,16 @@ export default Vue.extend({
       }
     },
     resetForm() {
-      this.email = ""
-      this.name = ""
-      this.subject = ""
-      this.message = ""
-      this.form.resetValidation()
+      try {
+        const form = this.$refs.form as VForm
+        form.resetValidation()
+        this.email = ""
+        this.name = ""
+        this.subject = ""
+        this.message = ""
+      } catch (err) {
+        console.log(err)
+      }
     },
   },
 })
