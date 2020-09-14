@@ -1,6 +1,8 @@
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from "aws-lambda"
 import { DynamoDB } from "aws-sdk"
 import { SuccessResponse, ErrorResponse } from "/opt/response/Response"
+import Contact from "/opt/contact/Contact"
+import checkParams from "/opt/params/checkParams"
 
 const docClient = new DynamoDB.DocumentClient({region: 'us-east-1'});
 
@@ -9,36 +11,26 @@ exports.handler = async (event: APIGatewayProxyEvent, context: Context): Promise
   if (!event.body) return new ErrorResponse(400, "Error: Request missing body.")
 
   let body = JSON.parse(event.body);
-  
-  let missingParams = []
-  
-  if (!body.email) missingParams.push('email')
-  if (!body.name) missingParams.push('name')
-  if (!body.subject) missingParams.push('subject')
-  if (!body.message) missingParams.push('message')
-  
-  if (missingParams.length > 0) {
-    let missingParamsString = missingParams.join(", ")
-    return new ErrorResponse(400, `Error: Missing parameters: ${missingParamsString}`)
-  }
+  let missingParams = checkParams(body, ['email', 'name', 'subject', 'message'])
+  if (missingParams.length > 0) return new ErrorResponse(400, `Error: Missing parameters: ${missingParams.join(", ")}`)
 
-  let item = {
-    email: body.email,
-    name: body.name,
-    date: Date.now(),
-    subject: body.subject,
-    message: body.message,
-  }
+  let contact = new Contact(
+    context.awsRequestId,
+    body.email,
+    body.name,
+    Math.floor(new Date().getTime() / 1000.0),
+    body.subject,
+    body.message,
+  )
 
   var params = {
     TableName: `${process.env.CONTACT_TABLE}`,
-    Item: item,
+    Item: contact,
   };
 
   try {
     await docClient.put(params).promise()
-    return new SuccessResponse(JSON.stringify(item))
-  
+    return new SuccessResponse(JSON.stringify(contact))
   } catch(err) {
     console.log(err)
     return new ErrorResponse(503, "Unable to process request at this time.")

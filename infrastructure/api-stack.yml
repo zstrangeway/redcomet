@@ -89,6 +89,31 @@ Resources:
         Variables:
           CONTACT_TABLE: !Ref ContactSubmissionsTable
 
+  # TODO: Require authorization
+  GetContactByIdLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub GetContactById-${Environment}
+      Handler: getContactById.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/contact 
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /contact/{userId}
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          CONTACT_TABLE: !Ref ContactSubmissionsTable
+
   ContactLayers:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -103,8 +128,8 @@ Resources:
     Properties:
       TableName: !Sub Contacts-${Environment}
       PrimaryKey:
-        Name: date
-        Type: Number
+        Name: id
+        Type: String
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
