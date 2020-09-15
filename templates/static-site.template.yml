@@ -18,6 +18,12 @@ Parameters:
   LogBucketName:
     Description: Log S3 Bucket Name
     Type: String
+  Environment:
+    Description: Environment that is utilizing the resources
+    Type: String
+  Service:
+    Description: Service that is utilizing the resources
+    Type: String
 
 ###############################################################################
 Resources:
@@ -28,6 +34,11 @@ Resources:
     Properties:
       DomainName: !Ref DomainName
       ValidationMethod: DNS
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: !Ref Service
 
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -67,6 +78,10 @@ Resources:
       Tags:
         - Key: Domain
           Value: !Ref DomainName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: !Ref Service
 
   CloudFrontOriginAccessIdentity:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
@@ -90,6 +105,10 @@ Resources:
       Tags:
         - Key: Domain
           Value: !Ref DomainName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: !Ref Service
 
   LogBucket:
     Type: AWS::S3::Bucket
@@ -97,6 +116,13 @@ Resources:
     Properties:
       AccessControl: LogDeliveryWrite
       BucketName: !Ref LogBucketName
+      Tags:
+        - Key: Domain
+          Value: !Ref DomainName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: !Ref Service
 
   BucketPolicy:
     Type: AWS::S3::BucketPolicy

@@ -17,6 +17,7 @@ mkdir $BUILD_DIR
 
 # make the deployment bucket in case it doesn't exist
 aws s3 mb s3://$BUCKET
+aws s3api put-bucket-tagging --bucket $BUCKET --tagging "TagSet=[{Key=environment,Value=$STAGE},{Key=service,Value=deployment}]"
 
 # compile back end
 rm -rf back-end/dist

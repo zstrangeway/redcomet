@@ -54,6 +54,8 @@ Resources:
         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
+        Environment: !Ref Environment
+        Service: WebApp
       TemplateURL: templates/static-site.template.yml
       Tags:
         - Key: Environment
@@ -74,6 +76,8 @@ Resources:
         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminRootBucketName]
         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminLogBucketName]
+        Environment: !Ref Environment
+        Service: WebAdmin
       TemplateURL: templates/static-site.template.yml
       Tags:
         - Key: Environment
