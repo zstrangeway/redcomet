@@ -1,0 +1,318 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Root stack for Red Comet Infrastructure
+
+###############################################################################
+Parameters:
+###############################################################################
+
+  Environment:
+    Description: Enter deployment environment (DEV, PROD)
+    Type: String
+    AllowedValues: 
+      - prod
+      - dev
+
+###############################################################################
+Mappings:
+###############################################################################
+
+  EnvironmentMap: 
+    prod: 
+      HostedZone: redcometcrafts.com
+      ApiDomainName: api.redcometcrafts.com
+      WebAppDomainName: redcometcrafts.com
+      WebAppRootBucketName: red-comet-webapp-prod
+      WebAppLogBucketName: red-comet-webapp-logs-prod
+      WebAdminDomainName: admin.redcometcrafts.com
+      WebAdminRootBucketName: red-comet-webadmin-prod
+      WebAdminLogBucketName: red-comet-webadmin-logs-prod
+    dev: 
+      HostedZone: redcometcrafts.com
+      ApiDomainName: dev-api.redcometcrafts.com
+      WebAppDomainName: dev.redcometcrafts.com
+      WebAppRootBucketName: red-comet-webapp-dev
+      WebAppLogBucketName: red-comet-webapp-logs-dev
+      WebAdminDomainName: dev-admin.redcometcrafts.com
+      WebAdminRootBucketName: red-comet-webadmin-dev
+      WebAdminLogBucketName: red-comet-webadmin-logs-dev
+
+###############################################################################
+Resources:
+###############################################################################
+
+# Web
+###############################################################################
+
+# TODO: Automate certificate validation
+# TODO: Review max and min TTL
+  WebAppStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
+        RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
+        LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
+      TemplateURL: static-site.template.yml
+
+# Admin
+###############################################################################
+
+# TODO: Automate certificate validation
+# TODO: Review max and min TTL
+  WebAdminStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        HostedZone: !FindInMap [EnvironmentMap, !Ref Environment, HostedZone]
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
+        RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminRootBucketName]
+        LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminLogBucketName]
+      TemplateURL: static-site.template.yml
+
+# API
+###############################################################################
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
+      ValidationMethod: DNS
+
+  RedCometAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      Domain:
+        DomainName: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
+        CertificateArn: !Ref Certificate
+        EndpointConfiguration: EDGE
+        Route53:
+          HostedZoneName: !Join ["", [!FindInMap [EnvironmentMap, !Ref Environment, HostedZone], "."]]
+          EvaluateTargetHealth: true
+      StageName: !Sub ${Environment}
+
+  CommonLayers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: !Sub Contact-Dependencies-${Environment}
+      Description: Dependencies for Contact functions
+      ContentUri: ../back-end/dist/_sharedLayer/nodejs
+      CompatibleRuntimes:
+        - nodejs12.x
+
+# Contact Service
+###############################################################################
+
+  PostContactLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub PostContact-${Environment}
+      Handler: postContact.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/contact 
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /contact
+            Method: post
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          CONTACT_TABLE: !Ref ContactSubmissionsTable
+
+  # TODO: Require authorization
+  GetContactsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub GetContacts-${Environment}
+      Handler: getContacts.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/contact
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /contact
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          CONTACT_TABLE: !Ref ContactSubmissionsTable
+
+  # TODO: Require authorization
+  GetContactByIdLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub GetContactById-${Environment}
+      Handler: getContactById.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/contact
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /contact/{id}
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          CONTACT_TABLE: !Ref ContactSubmissionsTable
+
+  ContactSubmissionsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Sub Contacts-${Environment}
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+# Quote Service
+###############################################################################
+
+  PostQuoteLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub PostQuote-${Environment}
+      Handler: postQuote.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/quote 
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /quote
+            Method: post
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          QUOTE_TABLE: !Ref QuotesTable
+
+  # TODO: Require authorization
+  GetQuotesLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub GetQuotes-${Environment}
+      Handler: getQuotes.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/quote
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /quote
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          QUOTES_TABLE: !Ref QuotesTable
+
+  # TODO: Require authorization
+  GetQuoteByIdLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub getQuoteById-${Environment}
+      Handler: getQuoteById.handler
+      Runtime: nodejs12.x
+      CodeUri: ../back-end/dist/quote
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+      Events:
+        MyEndpoint:
+          Type: Api 
+          Properties:
+            Path: /quote/{id}
+            Method: get
+            RestApiId:
+              Ref: RedCometAPI
+      Environment:
+        Variables:
+          QUOTES_TABLE: !Ref QuotesTable
+
+  QuotesTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: !Sub Quotes-${Environment}
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+###############################################################################
+Outputs:
+###############################################################################
+
+  ApiUrl:
+    Value: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
+    Description: Url for the api.
+
+  WebAppUrl:
+    Value: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
+    Description: Url for the web app.
+  WebAppRootBucketName:
+    Value: !GetAtt WebAppStack.Outputs.RootBucketName
+    Description: Name of the S3 bucket that hosts the static site for the web app.
+  WebAppLogBucketName:
+    Value: !GetAtt WebAppStack.Outputs.LogBucketName
+    Description: Name of the S3 bucket that stores the logs for the web app.
+
+  WebAdminUrl:
+    Value: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
+    Description: Url for the web admin.
+  WebAdminRootBucketName:
+    Value: !GetAtt WebAdminStack.Outputs.RootBucketName
+    Description: Name of the S3 bucket that hosts the static site for the web admin.
+  WebAdminLogBucketName:
+    Value: !GetAtt WebAdminStack.Outputs.LogBucketName
+    Description: Name of the S3 bucket that stores the logs for the web admin.

@@ -6,6 +6,7 @@ STAGE=${1:-dev}
 PROJECT=red-comet-$STAGE
 BUILD_DIR=.build
 OUTPUT_FILE=$BUILD_DIR/output.yml
+TEMPLATE_FILE=infrastructure/template.yml
 
 # Change the suffix on the bucket to something unique!
 BUCKET=$PROJECT-deployment-files
@@ -23,7 +24,7 @@ rm -rf back-end/dist
 
 # generate next stage yml file
 sam package \
-    --template-file infrastructure/root.yml \
+    --template-file $TEMPLATE_FILE \
     --output-template-file $OUTPUT_FILE \
     --s3-bucket $BUCKET                      
 
