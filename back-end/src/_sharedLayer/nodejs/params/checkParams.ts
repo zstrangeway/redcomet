@@ -1,5 +1,5 @@
 export default function checkParams(
-  body: object,
+  body: Record<string, unknown>,
   params: Array<string>
 ): Array<string> {
   const missingParams: Array<string> = []

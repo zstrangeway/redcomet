@@ -1,15 +1,10 @@
-import {
-  APIGatewayProxyEvent,
-  Context,
-  APIGatewayProxyResult,
-} from "aws-lambda"
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda"
 import { DynamoDB } from "aws-sdk"
 import { ErrorResponse, SuccessResponse } from "/opt/response/Response"
 const docClient = new DynamoDB.DocumentClient({ region: "us-east-1" })
 
 exports.handler = async (
-  event: APIGatewayProxyEvent,
-  context: Context
+  event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   if (!event.pathParameters?.id)
     return new ErrorResponse(400, "Missing User ID")
