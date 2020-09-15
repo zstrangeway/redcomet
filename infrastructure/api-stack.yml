@@ -71,7 +71,9 @@ Resources:
       FunctionName: !Sub GetContacts-${Environment}
       Handler: getContacts.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/contact 
+      CodeUri: ../back-end/dist/contact
+      Layers:
+        - !Ref ContactLayers
       MemorySize: 128 
       Timeout: 30
       Policies:
@@ -96,7 +98,9 @@ Resources:
       FunctionName: !Sub GetContactById-${Environment}
       Handler: getContactById.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/contact 
+      CodeUri: ../back-end/dist/contact
+      Layers:
+        - !Ref ContactLayers
       MemorySize: 128 
       Timeout: 30
       Policies:
@@ -106,7 +110,7 @@ Resources:
         MyEndpoint:
           Type: Api 
           Properties:
-            Path: /contact/{userId}
+            Path: /contact/{id}
             Method: get
             RestApiId:
               Ref: RedCometAPI

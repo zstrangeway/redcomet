@@ -1,28 +1,27 @@
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from "aws-lambda"
 import { DynamoDB } from "aws-sdk"
+import { ErrorResponse, SuccessResponse } from "/opt/response/Response"
 const docClient = new DynamoDB.DocumentClient({region: 'us-east-1'});
 
 exports.handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
+  if (!event.pathParameters?.id) return new ErrorResponse(400, "Missing User ID")
+
+  const id = event.pathParameters.id
 
   var params = {
-    TableName: process.env.CONTACT_TABLE,
+    TableName: `${process.env.CONTACT_TABLE}`,
+    Key: {
+      id
+    },
   };
   
   try {
-    // await docClient.put(params).promise()
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Hello world',
-        input: event,
-      })
-    }
+    const contact = await docClient.get(params).promise()
+    return contact.Item ? 
+      new SuccessResponse(JSON.stringify(contact.Item)) : 
+      new ErrorResponse(404, `No users found with id: ${id}`)
   } catch(err) {
     console.log(err)
-    // TODO: return better error
-    return {
-      statusCode: 503,
-      body: "Error"
-    }
+    return new ErrorResponse(503, "Unable to process request at this time.")
   }
 }
