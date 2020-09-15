@@ -97,7 +97,7 @@ Resources:
     Properties:
       LayerName: !Sub Contact-Dependencies-${Environment}
       Description: Dependencies for Contact functions
-      ContentUri: ../back-end/dist/_sharedLayer/nodejs
+      ContentUri: back-end/dist/_sharedLayer/nodejs
       CompatibleRuntimes:
         - nodejs12.x
 
@@ -110,7 +110,7 @@ Resources:
       FunctionName: !Sub PostContact-${Environment}
       Handler: postContact.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/contact 
+      CodeUri: back-end/dist/contact 
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -137,7 +137,7 @@ Resources:
       FunctionName: !Sub GetContacts-${Environment}
       Handler: getContacts.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/contact
+      CodeUri: back-end/dist/contact
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -164,7 +164,7 @@ Resources:
       FunctionName: !Sub GetContactById-${Environment}
       Handler: getContactById.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/contact
+      CodeUri: back-end/dist/contact
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -204,7 +204,7 @@ Resources:
       FunctionName: !Sub PostQuote-${Environment}
       Handler: postQuote.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/quote 
+      CodeUri: back-end/dist/quote 
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -231,7 +231,7 @@ Resources:
       FunctionName: !Sub GetQuotes-${Environment}
       Handler: getQuotes.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/quote
+      CodeUri: back-end/dist/quote
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -258,7 +258,7 @@ Resources:
       FunctionName: !Sub getQuoteById-${Environment}
       Handler: getQuoteById.handler
       Runtime: nodejs12.x
-      CodeUri: ../back-end/dist/quote
+      CodeUri: back-end/dist/quote
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 

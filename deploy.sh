@@ -6,7 +6,7 @@ STAGE=${1:-dev}
 PROJECT=red-comet-$STAGE
 BUILD_DIR=.build
 OUTPUT_FILE=$BUILD_DIR/output.yml
-TEMPLATE_FILE=infrastructure/template.yml
+TEMPLATE_FILE=template.yml
 
 # Change the suffix on the bucket to something unique!
 BUCKET=$PROJECT-deployment-files

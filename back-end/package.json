@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
+    "lint": "eslint --ext .ts --ignore-path .gitignore .",
     "deploy": "npm run compile && cd .. && sh deploy.sh"
   },
   "author": "",
@@ -12,8 +13,18 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.62",
     "@types/node": "^14.10.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
     "aws-sdk": "^2.750.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.1",
     "typescript": "^4.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "aws-lambda": "^1.0.6"
+  }
 }
