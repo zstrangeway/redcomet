@@ -54,7 +54,7 @@ Resources:
         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppDomainName]
         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
-      TemplateURL: static-site.template.yml
+      TemplateURL: templates/static-site.template.yml
 
 # Admin
 ###############################################################################
@@ -69,7 +69,7 @@ Resources:
         DomainName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminDomainName]
         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminRootBucketName]
         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminLogBucketName]
-      TemplateURL: static-site.template.yml
+      TemplateURL: templates/static-site.template.yml
 
 # API
 ###############################################################################
