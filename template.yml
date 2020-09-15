@@ -55,6 +55,11 @@ Resources:
         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppRootBucketName]
         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAppLogBucketName]
       TemplateURL: templates/static-site.template.yml
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: WebApp
 
 # Admin
 ###############################################################################
@@ -70,6 +75,11 @@ Resources:
         RootBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminRootBucketName]
         LogBucketName: !FindInMap [EnvironmentMap, !Ref Environment, WebAdminLogBucketName]
       TemplateURL: templates/static-site.template.yml
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Service
+          Value: WebAdmin
 
 # API
 ###############################################################################
@@ -79,6 +89,9 @@ Resources:
     Properties:
       DomainName: !FindInMap [EnvironmentMap, !Ref Environment, ApiDomainName]
       ValidationMethod: DNS
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
 
   RedCometAPI:
     Type: AWS::Serverless::Api
@@ -91,6 +104,9 @@ Resources:
           HostedZoneName: !Join ["", [!FindInMap [EnvironmentMap, !Ref Environment, HostedZone], "."]]
           EvaluateTargetHealth: true
       StageName: !Sub ${Environment}
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   CommonLayers:
     Type: AWS::Serverless::LayerVersion
@@ -129,6 +145,9 @@ Resources:
       Environment:
         Variables:
           CONTACT_TABLE: !Ref ContactSubmissionsTable
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   # TODO: Require authorization
   GetContactsLambda:
@@ -156,6 +175,9 @@ Resources:
       Environment:
         Variables:
           CONTACT_TABLE: !Ref ContactSubmissionsTable
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   # TODO: Require authorization
   GetContactByIdLambda:
@@ -183,6 +205,9 @@ Resources:
       Environment:
         Variables:
           CONTACT_TABLE: !Ref ContactSubmissionsTable
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   ContactSubmissionsTable:
     Type: AWS::Serverless::SimpleTable
@@ -194,6 +219,9 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
 # Quote Service
 ###############################################################################
@@ -223,6 +251,9 @@ Resources:
       Environment:
         Variables:
           QUOTE_TABLE: !Ref QuotesTable
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   # TODO: Require authorization
   GetQuotesLambda:
@@ -250,6 +281,9 @@ Resources:
       Environment:
         Variables:
           QUOTES_TABLE: !Ref QuotesTable
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   # TODO: Require authorization
   GetQuoteByIdLambda:
@@ -277,6 +311,9 @@ Resources:
       Environment:
         Variables:
           QUOTES_TABLE: !Ref QuotesTable
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
   QuotesTable:
     Type: AWS::Serverless::SimpleTable
@@ -288,6 +325,9 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+      Tags:
+        Environment: !Ref Environment
+        Service: Contact
 
 ###############################################################################
 Outputs:
