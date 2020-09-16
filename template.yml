@@ -137,7 +137,8 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
-        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ContactsTable
       Events:
         MyEndpoint:
           Type: Api 
@@ -148,7 +149,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          CONTACT_TABLE: !Ref ContactSubmissionsTable
+          CONTACT_TABLE: !Ref ContactsTable
       Tags:
         Environment: !Ref Environment
         Service: Contact
@@ -167,7 +168,8 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
-        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ContactsTable
       Events:
         MyEndpoint:
           Type: Api 
@@ -178,7 +180,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          CONTACT_TABLE: !Ref ContactSubmissionsTable
+          CONTACT_TABLE: !Ref ContactsTable
       Tags:
         Environment: !Ref Environment
         Service: Contact
@@ -208,24 +210,99 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          CONTACT_TABLE: !Ref ContactSubmissionsTable
+          CONTACT_TABLE: !Ref ContactsTable
       Tags:
         Environment: !Ref Environment
         Service: Contact
 
-  ContactSubmissionsTable:
-    Type: AWS::Serverless::SimpleTable
+  SendContactEmailLambda:
+    Type: AWS::Serverless::Function
     Properties:
-      TableName: !Sub Contacts-${Environment}
-      PrimaryKey:
-        Name: id
-        Type: String
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      FunctionName: !Sub SendContactEmail-${Environment}
+      Handler: sendContactEmail.handler
+      Runtime: nodejs12.x
+      CodeUri: back-end/dist/contact
+      Layers:
+        - !Ref CommonLayers
+      MemorySize: 128 
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Role:
+        Fn::GetAtt: [ SendContactEmailLambdaRole , Arn ]
+      Environment:
+        Variables:
+          TO_EMAIL: zac.strangeway@gmail.com
+          FROM_EMAIL: zac.strangeway@gmail.com
       Tags:
         Environment: !Ref Environment
         Service: Contact
+
+  ContactsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub Contacts-${Environment}
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+
+  ContactsTableStreamMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 1
+      Enabled: True
+      EventSourceArn:
+        Fn::GetAtt: [ ContactsTable , StreamArn ]
+      FunctionName:
+        Fn::GetAtt: [ SendContactEmailLambda , Arn ]
+      StartingPosition: LATEST
+
+  SendContactEmailLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow #allow lambda to assume this role
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: LambdaRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              Resource: arn:aws:logs:*:*:*
+            - Effect: Allow
+              Action:
+              - dynamodb:DescribeStream
+              - dynamodb:GetRecords
+              - dynamodb:GetShardIterator
+              - dynamodb:ListStreams
+              Resource: "*" # TODO: Limit permissions
+            - Effect: Allow
+              Action:
+              - ses:GetIdentityVerificationAttributes
+              - ses:SendEmail
+              - ses:SendRawEmail
+              - ses:VerifyEmailIdentity"
+              Resource: "*" # TODO: Limit permissions
 
 # Quote Service
 ###############################################################################
@@ -243,7 +320,8 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
-        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref QuotesTable
       Events:
         MyEndpoint:
           Type: Api 
@@ -257,7 +335,7 @@ Resources:
           QUOTE_TABLE: !Ref QuotesTable
       Tags:
         Environment: !Ref Environment
-        Service: Contact
+        Service: Quotes
 
   # TODO: Require authorization
   GetQuotesLambda:
@@ -273,7 +351,8 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
-        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref QuotesTable
       Events:
         MyEndpoint:
           Type: Api 
@@ -287,7 +366,7 @@ Resources:
           QUOTES_TABLE: !Ref QuotesTable
       Tags:
         Environment: !Ref Environment
-        Service: Contact
+        Service: Quotes
 
   # TODO: Require authorization
   GetQuoteByIdLambda:
@@ -303,7 +382,8 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
-        - AmazonDynamoDBFullAccess # TODO: Limit Permissions
+        - DynamoDBCrudPolicy:
+            TableName: !Ref QuotesTable
       Events:
         MyEndpoint:
           Type: Api 
@@ -317,7 +397,7 @@ Resources:
           QUOTES_TABLE: !Ref QuotesTable
       Tags:
         Environment: !Ref Environment
-        Service: Contact
+        Service: Quotes
 
   QuotesTable:
     Type: AWS::Serverless::SimpleTable
@@ -331,7 +411,7 @@ Resources:
         WriteCapacityUnits: 5
       Tags:
         Environment: !Ref Environment
-        Service: Contact
+        Service: Quotes
 
 ###############################################################################
 Outputs:

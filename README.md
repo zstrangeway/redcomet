@@ -11,6 +11,7 @@ JamStack website built with Nuxt.js and backed with AWS serverless (Lambda, Dyna
 - AWS SAM
   - https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html
 - Docker (for local testing)
+- Setup SES identidties for emails addresses that wil be sending emails on behalf of the application
 
 # Installation:
 - Start local API with `sh local.sh`
