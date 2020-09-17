@@ -138,7 +138,7 @@ Resources:
       Policies:
         - AWSLambdaBasicExecutionRole
         - DynamoDBCrudPolicy:
-            TableName: !Ref ContactsTable
+            TableName: !Sub Contacts-${Environment}
       Events:
         MyEndpoint:
           Type: Api 
@@ -149,7 +149,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          CONTACT_TABLE: !Ref ContactsTable
+          CONTACT_TABLE: !Sub Contacts-${Environment}
       Tags:
         Environment: !Ref Environment
         Service: Contact
@@ -157,6 +157,7 @@ Resources:
   # TODO: Require authorization
   GetContactsLambda:
     Type: AWS::Serverless::Function
+    DependsOn: ContactsTable
     Properties:
       FunctionName: !Sub GetContacts-${Environment}
       Handler: getContacts.handler
@@ -169,7 +170,7 @@ Resources:
       Policies:
         - AWSLambdaBasicExecutionRole
         - DynamoDBCrudPolicy:
-            TableName: !Ref ContactsTable
+            TableName: !Sub Contacts-${Environment}
       Events:
         MyEndpoint:
           Type: Api 
@@ -180,7 +181,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          CONTACT_TABLE: !Ref ContactsTable
+          CONTACT_TABLE: !Sub Contacts-${Environment}
       Tags:
         Environment: !Ref Environment
         Service: Contact
@@ -210,7 +211,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          CONTACT_TABLE: !Ref ContactsTable
+          CONTACT_TABLE: !Sub Contacts-${Environment}
       Tags:
         Environment: !Ref Environment
         Service: Contact
@@ -321,7 +322,7 @@ Resources:
       Policies:
         - AWSLambdaBasicExecutionRole
         - DynamoDBCrudPolicy:
-            TableName: !Ref QuotesTable
+            TableName: !Sub Quotes-${Environment}
       Events:
         MyEndpoint:
           Type: Api 
@@ -332,7 +333,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          QUOTE_TABLE: !Ref QuotesTable
+          QUOTE_TABLE: !Sub Quotes-${Environment}
       Tags:
         Environment: !Ref Environment
         Service: Quotes
@@ -352,7 +353,7 @@ Resources:
       Policies:
         - AWSLambdaBasicExecutionRole
         - DynamoDBCrudPolicy:
-            TableName: !Ref QuotesTable
+            TableName: !Sub Quotes-${Environment}
       Events:
         MyEndpoint:
           Type: Api 
@@ -363,7 +364,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          QUOTES_TABLE: !Ref QuotesTable
+          QUOTES_TABLE: !Sub Quotes-${Environment}
       Tags:
         Environment: !Ref Environment
         Service: Quotes
@@ -383,7 +384,7 @@ Resources:
       Policies:
         - AWSLambdaBasicExecutionRole
         - DynamoDBCrudPolicy:
-            TableName: !Ref QuotesTable
+            TableName: !Sub Quotes-${Environment}
       Events:
         MyEndpoint:
           Type: Api 
@@ -394,7 +395,7 @@ Resources:
               Ref: RedCometAPI
       Environment:
         Variables:
-          QUOTES_TABLE: !Ref QuotesTable
+          QUOTES_TABLE: !Sub Quotes-${Environment}
       Tags:
         Environment: !Ref Environment
         Service: Quotes
