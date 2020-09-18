@@ -128,7 +128,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub PostContact-${Environment}
-      Handler: postContact.handler
+      Handler: index.post
       Runtime: nodejs12.x
       CodeUri: back-end/dist/contact 
       Layers:
@@ -160,7 +160,7 @@ Resources:
     DependsOn: ContactsTable
     Properties:
       FunctionName: !Sub GetContacts-${Environment}
-      Handler: getContacts.handler
+      Handler: index.get
       Runtime: nodejs12.x
       CodeUri: back-end/dist/contact
       Layers:
@@ -191,7 +191,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub GetContactById-${Environment}
-      Handler: getContactById.handler
+      Handler: index.getById
       Runtime: nodejs12.x
       CodeUri: back-end/dist/contact
       Layers:
@@ -220,7 +220,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub SendContactEmail-${Environment}
-      Handler: sendContactEmail.handler
+      Handler: index.sendEmail
       Runtime: nodejs12.x
       CodeUri: back-end/dist/contact
       Layers:
