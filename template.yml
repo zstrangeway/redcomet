@@ -117,7 +117,7 @@ Resources:
     Properties:
       LayerName: !Sub Contact-Dependencies-${Environment}
       Description: Dependencies for Contact functions
-      ContentUri: back-end/dist/_sharedLayer/nodejs
+      ContentUri: backend/dist/layers/shared/nodejs
       CompatibleRuntimes:
         - nodejs12.x
 
@@ -130,7 +130,7 @@ Resources:
       FunctionName: !Sub PostContact-${Environment}
       Handler: index.post
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/contact 
+      CodeUri: backend/dist/lambdas/contact 
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -162,7 +162,7 @@ Resources:
       FunctionName: !Sub GetContacts-${Environment}
       Handler: index.get
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/contact
+      CodeUri: backend/dist/lambdas/contact
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -193,7 +193,7 @@ Resources:
       FunctionName: !Sub GetContactById-${Environment}
       Handler: index.getById
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/contact
+      CodeUri: backend/dist/lambdas/contact
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -222,7 +222,7 @@ Resources:
       FunctionName: !Sub SendContactEmail-${Environment}
       Handler: index.sendEmail
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/contact
+      CodeUri: backend/dist/lambdas/contact
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -314,7 +314,7 @@ Resources:
       FunctionName: !Sub PostQuote-${Environment}
       Handler: postQuote.handler
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/quote 
+      CodeUri: backend/dist/lambdas/quote 
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -345,7 +345,7 @@ Resources:
       FunctionName: !Sub GetQuotes-${Environment}
       Handler: getQuotes.handler
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/quote
+      CodeUri: backend/dist/lambdas/quote
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 
@@ -376,7 +376,7 @@ Resources:
       FunctionName: !Sub getQuoteById-${Environment}
       Handler: getQuoteById.handler
       Runtime: nodejs12.x
-      CodeUri: back-end/dist/quote
+      CodeUri: backend/dist/lambdas/quote
       Layers:
         - !Ref CommonLayers
       MemorySize: 128 

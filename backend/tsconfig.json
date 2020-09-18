@@ -22,7 +22,7 @@
         "./*"
       ],
       "/opt/*": [
-        "./src/_sharedLayer/nodejs/*"
+        "./src/layers/shared/nodejs/*"
       ]
     },
     "types": [

@@ -20,8 +20,8 @@ aws s3 mb s3://$BUCKET
 aws s3api put-bucket-tagging --bucket $BUCKET --tagging "TagSet=[{Key=environment,Value=$STAGE},{Key=service,Value=deployment}]"
 
 # compile back end
-rm -rf back-end/dist
-(cd back-end && npm run compile)
+rm -rf backend/dist
+(cd backend && npm run compile)
 
 # generate next stage yml file
 sam package \
