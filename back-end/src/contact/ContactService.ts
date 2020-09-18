@@ -8,9 +8,9 @@ import {
 import { SES } from "aws-sdk"
 import { DocumentClient } from "aws-sdk/clients/dynamodb"
 import { SendEmailRequest } from "aws-sdk/clients/ses"
-import Contact from "/opt/contact/Contact"
-import checkParams from "/opt/params/checkParams"
-import { SuccessResponse, ErrorResponse } from "/opt/response/Response"
+import Contact from "/opt/models/Contact"
+import checkParams from "/opt/utils/checkParams"
+import { SuccessResponse, ErrorResponse } from "/opt/models/Response"
 
 export default class ContactService {
   docClient: DocumentClient
